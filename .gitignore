@@ -1,1 +1,3 @@
 venv
+trader/db.sqlite3
+trader/trader/__pycache__/
