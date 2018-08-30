@@ -1,6 +1,7 @@
 install-dependencies:
 	virtualenv ./venv
 	./venv/bin/pip install Django
+	./venv/bin/pip install git+https://github.com/adjoint-io/uplink-sdk-python
 
 init-project:
 	./venv/bin/django-admin startproject trader
