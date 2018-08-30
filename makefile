@@ -4,6 +4,8 @@ install-dependencies:
 
 init-project:
 	./venv/bin/django-admin startproject trader
+	cd trader
+	../venv/bin/python manage.py startapp accounts
 
 server:
 	( \
