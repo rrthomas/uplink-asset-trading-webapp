@@ -9,8 +9,8 @@ This is a django application for managing tradeable Uplink assets
 
 ## Getting started
 
-`oake install-dependencies`
-`make server`
+`source setup.sh`
+`make run-server`
 
 In a separate window
 
