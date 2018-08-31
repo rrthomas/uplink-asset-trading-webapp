@@ -9,12 +9,12 @@
   </thead>
   <tbody>
 
-{% for account in accounts %}
+    {% for account in accounts %}
     <tr>
       <td>{{  account.metadata.Name  }}</td>
       <td>{{  account.address  }}</td>
     </tr>
-{% endfor %}
+    {% endfor %}
 
   </tbody>
   <tfoot>
