@@ -1,11 +1,20 @@
 # Set up Python/Django environment
 
-# Call venv with HOME set to empty string to avoid reading any
-# ~/.pydistutils.cfg
-HOME= python3 -m venv venv
+# No good workaround known for this problem, which may only affect systems
+# with patched python, such as Debian derivatives.
+if [ -f ~/.pydistutils.cfg ]; then
+    echo "Error: please remove or rename ~/.pydistutils.cfg"
+    exit 1
+fi
 
-# Enter the venv
-source ./venv/bin/activate
+# Install pipenv (run pip3 as that should work on all systems)
+pip3 install --user pipenv
 
 # Install dependencies
-pip --isolated install Django git+https://github.com/adjoint-io/uplink-sdk-python
+pipenv install django "git+https://github.com/adjoint-io/uplink-sdk-python#egg=uplink-sdk-python"
+
+
+# The following commands install the outline of the Django project:
+
+# pipenv run django-admin startproject trader
+# pipenv run sh -c "cd trader && python manage.py startapp accounts"
