@@ -2,9 +2,14 @@
 
 This is a django application for managing tradeable Uplink assets
 
+## Requirements
+
+* [Docker](https://www.docker.com/)
+* [Python](https://www.python.org/) version 3.6 or higher, with [virtualenv](https://virtualenv.pypa.io/en/stable/)
+
 ## Getting started
 
-`make install-dependencies`
+`oake install-dependencies`
 `make server`
 
 In a separate window
