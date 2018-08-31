@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 from uplink import *
 
 # Create your views here.
@@ -7,15 +7,16 @@ def is_validator(account):
     if 'validator' in account.metadata:
         return account.metadata['validator'] == 'true'
 
-
 def index(request):
     rpc = UplinkJsonRpc(host="localhost", port=8545, tls=False)
-    accounts = rpc.uplink_accounts()
+    all_accounts = rpc.uplink_accounts()
 
-    rtn = "<h2>Accounts</h2>\n"
+    accounts = []
 
-    for acct in accounts:
+    for acct in all_accounts:
         if not is_validator(acct):
-            rtn += "<p>" + acct.address + "</p>"
+            accounts.append(acct)
 
-    return HttpResponse(rtn)
+    context = {'accounts': accounts}
+
+    return render(request, 'accounts/index.html', context)
