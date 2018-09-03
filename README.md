@@ -9,8 +9,8 @@ This is a Django application for managing tradeable Uplink assets.
 
 ## Getting started
 
-`./setup.sh`
-`./run-server.sh`
+`./scripts/setup.sh`
+`./scripts/run-server.sh`
 
 To create some accounts, use the [Uplink block explorer](http://localhost:8000/accounts/)
 
