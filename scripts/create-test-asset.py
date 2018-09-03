@@ -1,41 +1,38 @@
-import binascii
+#!/usr/bin/env python3
+
 import os
+import argparse
+import binascii
+
 from ecdsa import SigningKey, SECP256k1
 from uplink import *
 
-# This script creates an asset in the Uplink system, and
-# circulates all the corresponding tokens to the account
-# that issued the asset.
 
-rpc = UplinkJsonRpc(host="localhost", port=8545, tls=False)
+# Command-line arguments
+parser = argparse.ArgumentParser(prog='create-test-asset',
+                                 description='''
+Creates an asset in the Uplink system, and circulate all the
+corresponding tokens to the account that issued the asset.
+''')
+parser.add_argument('account_address', metavar='ACCOUNT-ADDRESS', nargs=1,
+                    help="The account creating the asset, to which the asset tokens will be circulated")
+parser.add_argument('signing_key', metavar='SIGNING-KEY-HEX', nargs=1,
+                    help="The account's private key")
 
-# ACCOUNT_ADDRESS is the user who is creating the asset, and to whom
-# all the asset tokens will be circulated.
+args = parser.parse_args()
 
-# SIGNING_KEY_HEX is the private key that was generated when the account
-# was created.
+account_address = args.account_address[0]
+signing_key = args.signing_key[0]
 
-# If you used scripts/create-test-accounts.py, you can get suitable
-# values from the output of that script, and set environment variables
-# before running this script.
 
-# NB: The script will output the private key as: b'SOMETHING'
-# The corresponding enviroment variable should be set like this:
-#   export SIGNING_KEY_HEX=SOMETHING
-
-if not 'ACCOUNT_ADDRESS' in os.environ:
-    raise ValueError("ACCOUNT_ADDRESS environment variable is not set. Which account is issuing this asset?")
-
-if not 'SIGNING_KEY_HEX' in os.environ:
-    raise ValueError('SIGNING_KEY_HEX environment variable is not set. Provide the private key that corresponds to the ACCOUNT_ADDRESS')
-
-account_address = os.environ['ACCOUNT_ADDRESS']
-signing_key     = os.environ['SIGNING_KEY_HEX']
-
+# Recode keys
 skey = binascii.a2b_hex(signing_key)
-
 privkey = SigningKey.from_string(skey, curve = SECP256k1)
 
+# Connect to Uplink
+rpc = UplinkJsonRpc(host="localhost", port=8545, tls=False)
+
+# Create asset
 tx_hash, asset_address = rpc.uplink_create_asset(
         private_key    = privkey,
         origin         = account_address,
@@ -45,16 +42,13 @@ tx_hash, asset_address = rpc.uplink_create_asset(
         reference      = "Token",
         issuer         = account_address
 )
-
 print("Asset address: " + asset_address)
 
-# Circulate the asset to the issuer, so that its tokens can be
-# transferred between accounts
-
+# Circulate asset to issuer, so its tokens can be transferred between
+# accounts
 result = rpc.uplink_circulate_asset(
         private_key   = privkey,
         from_address  = account_address,
         amount        = 1000,
         asset_address = asset_address
 )
-

@@ -1,13 +1,26 @@
-from uplink import *
+#!/usr/bin/env python3
+
+import argparse
 import binascii
+import json
 
-# This script creates some accounts with a 'Name' metadata
-# field. The account keys and addresses are written to
-# stdout so that they can be captured in a file for ease
-# of later reuse (e.g. when creating and trading assets)
+from uplink import *
 
+
+# Command-line arguments
+parser = argparse.ArgumentParser(prog='create-test-asset',
+                                 description='''
+This script creates some accounts with a 'Name' metadata
+field, and outputs the account keys and addresses as JSON.
+''')
+
+args = parser.parse_args()
+
+
+# Connect to Uplink
 rpc = UplinkJsonRpc(host="localhost", port=8545, tls=False)
 
+# Create test accounts
 def create_account(rpc, name):
     pubkey, skey = ecdsa_new()
 
@@ -21,18 +34,14 @@ def create_account(rpc, name):
             timezone="CET"
             )
 
-    print("Name: " + name)
-    print("Account address: " + address)
-    print("Public key:")
-    print(binascii.b2a_hex(pubkey.to_string()))
-    print("Private key:")
-    print(binascii.b2a_hex(skey.to_string()))
-    print("-------------------\n")
+    return {
+        'name': name,
+        'address': address,
+        'public_key': binascii.b2a_hex(pubkey.to_string()).decode(),
+        'private_key': binascii.b2a_hex(skey.to_string()).decode()
+    }
 
-################################
-
-names = ["Alice", "Bob", "Charlie", "David"]
-
-print()
-for name in names:
-    create_account(rpc, name)
+accounts = []
+for name in ["Alice", "Bob", "Charlie", "David"]:
+    accounts.append(create_account(rpc, name))
+print(json.dumps(accounts, sort_keys=True, indent=4))
