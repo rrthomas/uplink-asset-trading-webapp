@@ -7,8 +7,8 @@ if [ -f ~/.pydistutils.cfg ]; then
     exit 1
 fi
 
-# Install pipenv (run pip3 as that should work on all systems)
-pip3 install --user pipenv
+# Install pipenv (run pip3, as that should work on all systems)
+pip3 install pipenv
 
 # Install dependencies
 pipenv install django "git+https://github.com/adjoint-io/uplink-sdk-python#egg=uplink-sdk-python"
