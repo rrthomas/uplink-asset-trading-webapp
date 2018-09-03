@@ -1,5 +1,6 @@
 Pipfile
 Pipfile.lock
 trader/db.sqlite3
+test-accounts.txt
 */*/__pycache__/
 **/*.pyc
