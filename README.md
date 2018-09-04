@@ -10,6 +10,13 @@ This is a Django application for managing tradeable Uplink assets.
 ## Getting started
 
 `./scripts/setup.sh`
+
+This sets up a Python environment with `pipenv` (which it also installs as
+needed). You can run commands in this environment either by prefixing them
+with `pipenv run`, or by starting a sub-shell with `pipenv shell` and then
+running commands in the sub-shell. For brevity, the rest of this
+documentation assumes that you have taken the latter option.
+
 `./scripts/run-server.sh`
 
 Once the development server and the uplink node are running, start up the
@@ -36,12 +43,11 @@ addresses for subsequent transactions.
 
 The utility script `scripts/create-test-asset.py` can be used to create an
 asset so that tokens can be transferred between accounts. The script needs
-an account address and a private key - see the script for details.
+an account address and a private key:
 
 ```
-export ACCOUNT_ADDRESS=[address of issuing account]
-export SIGNING_KEY_HEX=[private key of issuing account]
-pipenv run python scripts/create-test-asset.py
+./scripts/create-test-asset.py [address of issuing account] [private key of issuing account]
+
 ```
 
 Use the [Uplink block explorer](http://localhost:8000/assets/) to view

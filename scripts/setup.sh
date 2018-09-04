@@ -15,6 +15,5 @@ pipenv install django "git+https://github.com/adjoint-io/uplink-sdk-python#egg=u
 
 
 # The following commands install the outline of the Django project:
-
 # pipenv run django-admin startproject trader
 # pipenv run sh -c "cd trader && python manage.py startapp accounts"
